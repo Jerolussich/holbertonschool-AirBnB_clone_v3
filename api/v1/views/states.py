@@ -29,7 +29,7 @@ def post_state():
     from models.state import State
 
     http_request = request.get_json(silent=True)
-    if http_request == None:
+    if http_request is None:
         return 'Not a JSON', 400
     elif 'name' not in http_request.keys():
         return 'Missing name', 400
@@ -50,11 +50,11 @@ def put_state(state_id):
 
     found_state = storage.get(State, state_id)
 
-    if found_state == None:
+    if found_state is None:
         return '', 404
 
     http_request = request.get_json(silent=True)
-    if http_request == None:
+    if http_request is None:
         return 'Not a JSON', 400
 
     for key, values in http_request.items():
@@ -62,7 +62,7 @@ def put_state(state_id):
             setattr(found_state, key, values)
 
     storage.save()
-    return jsonify(found_state.to_dict()), 201
+    return jsonify(found_state.to_dict()), 200
 
 
 @ app_views.route('/states/<state_id>', methods=['GET'])
