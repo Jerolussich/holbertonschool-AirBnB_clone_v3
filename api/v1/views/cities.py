@@ -48,9 +48,9 @@ def post_city(state_id):
 
     http_request = request.get_json(silent=True)
     if http_request is None:
-        return 'Not a JSON', 500
+        return 'Not a JSON', 400
     elif 'name' not in http_request.keys():
-        return 'Missing name', 500
+        return 'Missing name', 400
 
     new_city = City(**http_request)
     new_city.state_id = state_id
