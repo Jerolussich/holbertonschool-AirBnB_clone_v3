@@ -1,4 +1,6 @@
 #!/usr/bin/python3
+"""Users routes"""
+
 
 from flask import abort, jsonify
 from api.v1.views import app_views
