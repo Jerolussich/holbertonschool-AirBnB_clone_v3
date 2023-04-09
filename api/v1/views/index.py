@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-
+"""Contains routes"""
 from api.v1.views import app_views
 
 
