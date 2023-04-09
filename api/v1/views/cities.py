@@ -14,7 +14,7 @@ def cities_list(state_id):
     from models.state import State
 
     state_found = storage.get(State, state_id)
-    if state_found == None:
+    if state_found is None:
         abort(404)
 
     list_of_cities = state_found.cities
@@ -34,10 +34,10 @@ def cities(city_id):
     from models.city import City
 
     city_found = storage.get(City, city_id)
-    if city_found == None:
+    if city_found is None:
         abort(404)
 
-    return jsonify(city_found.to_dict()), 201
+    return jsonify(city_found.to_dict()), 200
 
 
 @app_views.route('/states/<state_id>/cities', methods=['POST'])
@@ -47,7 +47,7 @@ def post_city(state_id):
     from models.city import City
 
     http_request = request.get_json(silent=True)
-    if http_request == None:
+    if http_request is None:
         return 'Not a JSON', 400
     elif 'name' not in http_request.keys():
         return 'Missing name', 400
@@ -57,7 +57,7 @@ def post_city(state_id):
     storage.new(new_city)
     storage.save()
 
-    return jsonify(new_city.to_dict()), 201
+    return jsonify(new_city.to_dict()), 200
 
 
 @app_views.route('/cities/<city_id>', methods=['PUT'])
@@ -69,11 +69,11 @@ def put_city(city_id):
 
     found_city = storage.get(City, city_id)
 
-    if found_city == None:
+    if found_city is None:
         return '', 404
 
     http_request = request.get_json(silent=True)
-    if http_request == None:
+    if http_request is None:
         return 'Not a JSON', 400
 
     for key, values in http_request.items():
@@ -81,7 +81,7 @@ def put_city(city_id):
             setattr(found_city, key, values)
 
     storage.save()
-    return jsonify(found_city.to_dict()), 201
+    return jsonify(found_city.to_dict()), 200
 
 
 @app_views.route('/cities/<city_id>', methods=['DELETE'])
@@ -92,7 +92,7 @@ def city_delete(city_id):
     from models.city import City
 
     city_found = storage.get(City, city_id)
-    if city_found == None:
+    if city_found is None:
         return '{}', 404
 
     storage.delete(city_found)
