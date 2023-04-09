@@ -48,16 +48,16 @@ def post_city(state_id):
 
     http_request = request.get_json(silent=True)
     if http_request is None:
-        return 'Not a JSON', 400
+        return 'Not a JSON', 500
     elif 'name' not in http_request.keys():
-        return 'Missing name', 400
+        return 'Missing name', 500
 
     new_city = City(**http_request)
     new_city.state_id = state_id
     storage.new(new_city)
     storage.save()
 
-    return jsonify(new_city.to_dict()), 200
+    return jsonify(new_city.to_dict()), 201
 
 
 @app_views.route('/cities/<city_id>', methods=['PUT'])
