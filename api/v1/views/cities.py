@@ -45,12 +45,15 @@ def post_city(state_id):
     """create a city and links to state"""
     from flask import request
     from models.city import City
+    from models.state import State
 
     http_request = request.get_json(silent=True)
     if http_request is None:
         return 'Not a JSON', 400
     elif 'name' not in http_request.keys():
         return 'Missing name', 400
+    elif storage.get(State, state_id) is None:
+        abort(404)
 
     new_city = City(**http_request)
     new_city.state_id = state_id
