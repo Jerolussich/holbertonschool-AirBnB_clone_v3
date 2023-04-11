@@ -37,7 +37,7 @@ def users(user_id):
     if user_found is None:
         abort(404)
 
-    return jsonify(user_found.to_dict())
+    return jsonify(user_found.to_dict()), 200
 
 
 @app_views.route('/users', methods=['POST'])
@@ -66,12 +66,12 @@ def put_user(user_id):
     """updates given user"""
 
     from flask import request
-    from models.amenity import Amenity
+    from models.user import User
 
-    found_user = storage.get(Amenity, user_id)
+    found_user = storage.get(User, user_id)
 
     if found_user is None:
-        return '', 404
+        return '', 400
 
     http_request = request.get_json(silent=True)
     if http_request is None:
