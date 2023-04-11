@@ -15,13 +15,13 @@ def users_list():
     from models.user import User
 
     user_found = storage.all(User)
-    if user_found == None:
+    if user_found is None:
         abort(404)
 
     user_list = []
 
-    for user in user_found:
-        user_list.append(user.to_dict())
+    for user, object in user_found.items():
+        user_list.append(object.to_dict())
 
     return jsonify(user_list)
 
