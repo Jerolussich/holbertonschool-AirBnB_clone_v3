@@ -14,7 +14,7 @@ def amenities_list():
     from models.amenity import Amenity
 
     amenities_found = storage.all(Amenity)
-    if amenities_found == None:
+    if amenities_found is None:
         abort(404)
 
     amenities_list = []
@@ -33,20 +33,20 @@ def amenity(amenity_id):
     from models.amenity import Amenity
 
     amenity_found = storage.get(Amenity, amenity_id)
-    if amenity_found == None:
+    if amenity_found is None:
         abort(404)
 
-    return jsonify(amenity_found.to_dict()), 201
+    return jsonify(amenity_found.to_dict()), 200
 
 
-@app_views.route('/states/amenities', methods=['POST'])
+@app_views.route('/amenities', methods=['POST'])
 def create_amenities():
     """create an amenity"""
     from flask import request
     from models.amenity import Amenity
 
     http_request = request.get_json(silent=True)
-    if http_request == None:
+    if http_request is None:
         return 'Not a JSON', 400
     elif 'name' not in http_request.keys():
         return 'Missing name', 400
@@ -67,11 +67,11 @@ def put_amenity(amenity_id):
 
     found_amenity = storage.get(Amenity, amenity_id)
 
-    if found_amenity == None:
+    if found_amenity is None:
         return '', 404
 
     http_request = request.get_json(silent=True)
-    if http_request == None:
+    if http_request is None:
         return 'Not a JSON', 400
 
     for key, values in http_request.items():
@@ -90,7 +90,7 @@ def amenity_delete(amenity_id):
     from models.amenity import Amenity
 
     amenity_found = storage.get(Amenity, amenity_id)
-    if amenity_found == None:
+    if amenity_found is None:
         return '{}', 404
 
     storage.delete(amenity_found)
