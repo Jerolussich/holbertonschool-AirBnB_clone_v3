@@ -71,11 +71,11 @@ def put_user(user_id):
     found_user = storage.get(User, user_id)
 
     if found_user is None:
-        return '', 400
+        return '', 404
 
     http_request = request.get_json(silent=True)
     if http_request is None:
-        return 'Not a JSON', 404
+        return 'Not a JSON', 400
 
     for key, values in http_request.items():
         if key not in ['id', 'email', 'created_at', 'updated_at']:
