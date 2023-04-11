@@ -28,7 +28,7 @@ def places_list(city_id):
     return jsonify(places_list)
 
 
-@app_views.route('/places/<place_id>', methods=['GET'])
+@ app_views.route('/places/<place_id>', methods=['GET'])
 def place(place_id):
     """returns place of id given"""
 
@@ -42,7 +42,7 @@ def place(place_id):
     return jsonify(place_found.to_dict()), 201
 
 
-@app_views.route('/cities/<city_id>/places', methods=['POST'])
+@ app_views.route('/cities/<city_id>/places', methods=['POST'])
 def post_place(city_id):
     """create a place and link to city"""
     from flask import request
@@ -58,7 +58,8 @@ def post_place(city_id):
     elif 'user_id' not in http_request.keys():
         return 'Missing user_id', 400
 
-    if storage.get(User, http_request.user_id) is None or storage.get(City, city_id) is None:
+    if storage.get(User, http_request.user_id) is None or\
+            storage.get(City, city_id) is None:
         abort(404)
 
     new_place = Place(**http_request)
@@ -69,7 +70,7 @@ def post_place(city_id):
     return jsonify(new_place.to_dict()), 201
 
 
-@app_views.route('/places/<place_id>', methods=['PUT'])
+@ app_views.route('/places/<place_id>', methods=['PUT'])
 def put_place(place_id):
     """updates given place"""
 
@@ -93,7 +94,7 @@ def put_place(place_id):
     return jsonify(found_place.to_dict()), 201
 
 
-@app_views.route('/places/<place_id>', methods=['DELETE'])
+@ app_views.route('/places/<place_id>', methods=['DELETE'])
 def place_delete(place_id):
     """DELETE place if id is found"""
 
