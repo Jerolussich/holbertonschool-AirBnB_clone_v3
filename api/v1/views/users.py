@@ -34,7 +34,7 @@ def users(user_id):
     from models.user import User
 
     user_found = storage.get(User, user_id)
-    if user_found == None:
+    if user_found is None:
         abort(404)
 
     return jsonify(user_found.to_dict())
@@ -47,7 +47,7 @@ def create_user():
     from models.user import User
 
     http_request = request.get_json(silent=True)
-    if http_request == None:
+    if http_request is None:
         return 'Not a JSON', 400
     elif 'email' not in http_request.keys():
         return 'Missing email', 400
@@ -70,11 +70,11 @@ def put_user(user_id):
 
     found_user = storage.get(Amenity, user_id)
 
-    if found_user == None:
+    if found_user is None:
         return '', 404
 
     http_request = request.get_json(silent=True)
-    if http_request == None:
+    if http_request is None:
         return 'Not a JSON', 400
 
     for key, values in http_request.items():
@@ -93,7 +93,7 @@ def user_delete(user_id):
     from models.user import User
 
     user_found = storage.get(User, user_id)
-    if user_found == None:
+    if user_found is None:
         return '{}', 404
 
     storage.delete(user_found)
