@@ -5,27 +5,24 @@ from flask import abort, jsonify
 from api.v1.views import app_views
 from models import storage
 
+from api.v1.views import app_views
+from flask import abort, request, jsonify
+from models import storage
+from models.city import City
 
-@app_views.route('/cities/<city_id>/places', methods=['GET'])
-def places_list(city_id):
-    """returns places for a city given"""
 
-    from models import storage
-    from models.place import Place
-    from models.city import City
-
-    city_found = storage.get(City, city_id)
-    if city_found is None:
+@app_views.route(
+    '/cities/<city_id>/places', strict_slashes=False, methods=['GET'])
+def get_places_in_city(city_id):
+    """ retrieves all places in a city """
+    city = storage.get(City, city_id)
+    if city is None:
         abort(404)
-
-    list_of_places = storage.all(Place)
-    places_list = []
-
-    for place, object in list_of_places.items():
-        if object.city_id is city_id:
-            places_list.append(object.to_dict())
-
-    return jsonify(places_list)
+    places = []
+    for place in storage.all('Place').values():
+        if place.city_id == city_id:
+            places.append(place.to_dict())
+    return jsonify(places)
 
 
 @ app_views.route('/places/<place_id>', methods=['GET'])
