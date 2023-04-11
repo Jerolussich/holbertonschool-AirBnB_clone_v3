@@ -6,7 +6,6 @@ from api.v1.views import app_views
 from models import storage
 
 from api.v1.views import app_views
-from flask import abort, request, jsonify
 from models import storage
 from models.city import City
 
@@ -36,7 +35,7 @@ def place(place_id):
     if place_found is None:
         abort(404)
 
-    return jsonify(place_found.to_dict()), 201
+    return jsonify(place_found.to_dict()), 200
 
 
 @ app_views.route('/cities/<city_id>/places', methods=['POST'])
@@ -55,8 +54,9 @@ def post_place(city_id):
     elif 'user_id' not in http_request.keys():
         return 'Missing user_id', 400
 
-    if storage.get(User, http_request.user_id) is None or\
-            storage.get(City, city_id) is None:
+    print(http_request)
+    if storage.get(User, http_request['user_id']) is None\
+            or storage.get(City, city_id) is None:
         abort(404)
 
     new_place = Place(**http_request)
@@ -88,7 +88,7 @@ def put_place(place_id):
             setattr(found_place, key, values)
 
     storage.save()
-    return jsonify(found_place.to_dict()), 201
+    return jsonify(found_place.to_dict()), 200
 
 
 @ app_views.route('/places/<place_id>', methods=['DELETE'])
