@@ -15,15 +15,15 @@ def places_list(city_id):
     from models.city import City
 
     city_found = storage.get(City, city_id)
-    if city_found == None:
+    if city_found is None:
         abort(404)
 
     list_of_places = storage.all(Place)
     places_list = []
 
-    for place in list_of_places:
-        if place.city_id == city_id:
-            places_list.append(place.to_dict())
+    for place, object in list_of_places.items():
+        if object.city_id is city_id:
+            places_list.append(object.to_dict())
 
     return jsonify(places_list)
 
@@ -36,7 +36,7 @@ def place(place_id):
     from models.place import Place
 
     place_found = storage.get(Place, place_id)
-    if place_found == None:
+    if place_found is None:
         abort(404)
 
     return jsonify(place_found.to_dict()), 201
@@ -51,14 +51,14 @@ def post_place(city_id):
     from models.city import City
 
     http_request = request.get_json(silent=True)
-    if http_request == None:
+    if http_request is None:
         return 'Not a JSON', 400
     elif 'name' not in http_request.keys():
         return 'Missing name', 400
     elif 'user_id' not in http_request.keys():
         return 'Missing user_id', 400
 
-    if storage.get(User, http_request.user_id) == None or storage.get(City, city_id) == None:
+    if storage.get(User, http_request.user_id) is None or storage.get(City, city_id) is None:
         abort(404)
 
     new_place = Place(**http_request)
@@ -78,11 +78,11 @@ def put_place(place_id):
 
     found_place = storage.get(Place, place_id)
 
-    if found_place == None:
+    if found_place is None:
         return '', 404
 
     http_request = request.get_json(silent=True)
-    if http_request == None:
+    if http_request is None:
         return 'Not a JSON', 400
 
     for key, values in http_request.items():
@@ -101,7 +101,7 @@ def place_delete(place_id):
     from models.place import Place
 
     place_found = storage.get(Place, place_id)
-    if place_found == None:
+    if place_found is None:
         return '{}', 404
 
     storage.delete(place_found)
