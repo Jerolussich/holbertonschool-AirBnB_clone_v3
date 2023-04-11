@@ -71,7 +71,7 @@ def put_user(user_id):
     found_user = storage.get(User, user_id)
 
     if found_user is None:
-        return '', 404
+        return '', 400
 
     http_request = request.get_json(silent=True)
     if http_request is None:
